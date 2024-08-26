@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:fragment="title">Rad</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<header th:fragment="header">
+    <nav class="navbar navbar-dark bg-dark" style="height: 70px">
+        <div class="container-fluid">
+            <a href="/" style="text-decoration: none">
+                <span class="navbar-brand mb-0 h1">Rad Store</span>
+            </a>
+            <a href="/admin" sec:authorize="hasAuthority('ROLE_ADMIN')">
+                <span class="navbar-brand mb-0 h1">Панель администратора</span>
+            </a>
+            <div th:if="${#authorization.expression('isAuthenticated()')}" class="dropdown text-end">
+                <a href="/profile">
+                    <img src="/static/img/profile.png" alt="mdo"
+                         width="32" height="32" class="rounded-circle">
+                </a>
+            </div>
+            <button th:if="${!#authorization.expression('isAuthenticated()')}" class="btn btn-light btn-sm my-2 my-sm-0" type="button"
+                    onclick="window.location.href = '/login'">
+                Войти
+            </button>
+        </div>
+    </nav>
+</header>
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:replace="blocks/general :: title"></title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<header th:replace="blocks/general :: header"></header>
+<div class="container mt-4">
+    <h1 style="text-align: center">Авторизация</h1>
+    <!--<form action="/login" method="post">
+        Эл.Почта: <input type="email" name="username">
+        Пароль: <input type="password" name="password">
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+        <input type="submit" value="Вход">
+    </form>
+    <a href="/registration">Зарегистрироваться</a> -->
+    <form action="/login " method="post">
+        <div class="form-group">
+            <label for="email">Электронная почта</label>
+            <input type="email" class="form-control" id="email" name="username" th:classappend="${param.error} ? 'is-invalid'">
+        </div>
+        <div class="form-group">
+            <label for="password">Пароль</label>
+            <input type="password" class="form-control" id="password" name="password" th:classappend="${param.error} ? 'is-invalid'">
+        </div>
+        <div id="wrong-details" class="invalid-feedback" th:if="${param.error}">
+            Неверно введены данные
+        </div>
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+        <button type="submit" style="width: 100%" class="btn btn-dark">Войти</button>
+    </form>
+    <hr>
+    <h2>Нет аккаунта Rad Store? <a href="/registration">Зарегистрируйся!</a></h2>
+</div>
+</body>
+</html>

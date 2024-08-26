@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:replace="blocks/general :: title"></title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/for-card.css">
+    <link rel="stylesheet" href="/static/css/for-slide.css">
+</head>
+<body>
+<header th:replace="blocks/general :: header"></header>
+<div class="container mt-4">
+    <h1 th:text="'Нет фото'" style="text-align: center" th:if="${#lists.isEmpty(product.images)}"></h1>
+    <div id="carouselExample" class="carousel slide" th:if="${!#lists.isEmpty(product.images)}">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <a th:href="@{/images/{id}(id=${product.images.get(0).id})}" style="text-decoration: none;">
+                <img th:src="@{/images/{id}(id=${product.images.get(0).id})}" class="d-block w-100 carousel-image-img" alt="...">
+                </a>
+            </div>
+            <div class="carousel-item" th:if="${product.images.size() == 2}">
+                <a th:href="@{/images/{id}(id=${product.images.get(1).id})}" style="text-decoration: none;">
+                <img th:src="@{/images/{id}(id=${product.images.get(1).id})}" class="d-block w-100 carousel-image-img" alt="...">
+                </a>
+            </div>
+            <div class="carousel-item" th:if="${product.images.size() == 3}">
+                <a th:href="@{/images/{id}(id=${product.images.get(2).id})}" style="text-decoration: none;">
+                <img th:src="@{/images/{id}(id=${product.images.get(2).id})}" class="d-block w-100 carousel-image-img" alt="...">
+                </a>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+<hr>
+<p><h1 style="text-align: center" th:text="${product.title} + ' | ' + ${product.price} + ' лей'"></h1></p>
+<p style="text-align: center" th:text="${product.description}"></p>
+<p style="text-align: center" th:text="'Номер телефона продавца: ' + ${user.phoneNumber}"></p>
+
+<hr>
+<p style="text-align: center">
+    <a th:href="@{/user/{id}(id=${user.id})}" style="text-decoration: none;">
+        <img src="/static/img/proff.jpg" alt="mdo" width="32" height="32" class="rounded-circle" th:text="' ' + ${user.name}">
+    </a>
+</p>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

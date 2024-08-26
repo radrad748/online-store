@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:replace="blocks/general :: title"></title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<header th:replace="blocks/general :: header"></header>
+<div class="container mt-4">
+    <h1 style="text-align: center">Личный кабинет</h1><hr><br>
+    <div style="text-align: center">
+        <img src="/static/img/profile.png"
+             style="border:2px solid black; border-radius: 20px" height="120">
+        <br>
+        <br>
+        <h2 th:text="${user.name}"></h2>
+        <br>
+        Электоронная почта: <b th:text="${user.email}"></b>
+        <br>
+        Номер телефона: <b th:text="${user.phoneNumber}"></b>
+        <br>
+        <br>
+    <a class="btn btn-dark mb-3" style="text-align: center; width: 100%"
+       href="/my/products">
+        Мои товары
+    </a>
+    <form action="/logout" method="post">
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+        <button type="submit" style="text-align: center; width: 100%" class="btn btn-danger mb-2">
+            Выйти из аккаунта
+        </button>
+    </form>
+        <form th:action="@{/user/delete/{id}(id=${user.id})}" method="post">
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+            <button type="submit" style="text-align: center; width: 100%" class="btn btn-danger mb-2">
+                Удалить аккаунт
+            </button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

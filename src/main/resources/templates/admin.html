@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:replace="blocks/general :: title"></title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<header th:replace="blocks/general :: header"></header>
+<div class="container mt-4">
+    <h1 style="text-align: center">Панель администратора</h1>
+    <hr>
+    <table class="table table-hover table-dark">
+        <tr>
+            <th scope="col">Email</th>
+            <th scope="col">Номер телефона</th>
+            <th scope="col">Активность</th>
+            <th scope="col">Роли</th>
+            <th scope="col">Бан</th>
+            <th scope="col">Редактирование</th>
+            <th scope="col">Подробная информация</th>
+            <th scope="col">Удалить</th>
+        </tr>
+
+        <tr th:each="user : ${users}">
+            <th th:text="${user.email}"></th>
+            <th th:text="${user.phoneNumber}"></th>
+            <th th:text="${user.active}"></th>
+            <th>
+                <ul>
+                    <li th:each="role : ${user.roles}" th:text="${role}"></li>
+                </ul>
+            </th>
+            <th>
+                <form th:action="@{/admin/user/ban/{id}(id=${user.id})}" method="post">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                    <input type="submit" class="btn btn-light" value="Бан">
+                </form>
+            </th>
+            <th><a th:href="@{/admin/user/edit/{id}(id=${user.id})}" style="text-decoration: none;">Редактирование</a></th>
+            <th><a th:href="@{/user/{id}(id=${user.id})}" style="text-decoration: none;">Подробная информация</a></th>
+            <th>
+                <form th:action="@{/admin/user/delete/{id}(id=${user.id})}" method="post">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                    <input type="submit" class="btn btn-light" value="Удалить">
+                </form>
+            </th>
+        </tr>
+
+        <h3 th:if="${#lists.isEmpty(users)}">Пользователей нет</h3>
+
+    </table>
+    <nav aria-label="Page navigation example" th:if="${!#lists.isEmpty(users)}">
+        <ul class="pagination">
+            <li class="page-item" th:if="${!#lists.isEmpty(pageNumbers) and pageNumbers.get(0) != 1}">
+                <a class="page-link" th:href="@{/admin(page=${currentPage}, move=2, anchor=${pageNumbers.get(0)})}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <div th:each="page : ${pageNumbers}">
+                <li class="page-item"><a class="page-link"
+                                         th:href="@{/admin(page=${currentPage}, move=0, anchor=${pageNumbers.get(0)})}" th:text="${page}"></a></li>
+            </div>
+            <li class="page-item">
+                <a class="page-link" th:href="@{/admin(page=${currentPage}, move=1, anchor=${pageNumbers.get(0)})}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+
+
+
+
+<!--<table border="1">
+    <tr>
+        <th>Email</th>
+        <th>Номер телефона</th>
+        <th>Активность</th>
+        <th>Роли</th>
+        <th>Бан</th>
+        <th>Редактировать</th>
+        <th>Подробная информация</th>
+    </tr>
+    <tr th:each="user : ${users}">
+        <th th:text="${user.email}"></th>
+        <th th:text="${user.phoneNumber}"></th>
+        <th th:text="${user.active}"></th>
+        <th>
+            <ul>
+                <li th:each="role : ${user.roles}" th:text="${role}"></li>
+            </ul>
+        </th>
+        <th>
+            <form th:action="@{/admin/user/ban/{id}(id=${user.id})}" method="post">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                <input type="submit" value="Бан">
+            </form>
+        </th>
+        <th><a th:href="@{/admin/user/edit/{id}(id=${user.id})}">Редактировать</a></th>
+        <th><a th:href="@{/user/{id}(id=${user.id})}">Подробная информация</a></th>
+    </tr>
+</table>
+-->
+</body>
+</html>

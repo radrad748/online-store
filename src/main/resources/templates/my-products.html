@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:replace="blocks/general :: title"></title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/for-card.css" rel="stylesheet">
+</head>
+<body>
+<header th:replace="blocks/general :: header"></header>
+<div class="container mt-4">
+    <h1 style="text-align: center">Мои товары</h1>
+    <hr>
+    <p th:if="${error}" th:text="${error}" style="color: red"></p>
+    <a class="btn btn-dark mt-3 mb-3" style="text-align: center; width: 100%"
+       data-toggle="collapse" href="#collapseExample" role="button"
+       aria-expanded="true" aria-controls="collapseExample">
+        Добавить новый товар
+    </a>
+    <div class="collapse mb-3" id="collapseExample" style="">
+        <form action="/product/create" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="productName">Название товара</label>
+                <input type="text" required class="form-control"
+                       id="productName" name="title">
+            </div>
+            <div class="form-group">
+                <label for="price">Цена товара</label>
+                <div class="input-group mb-3">
+                    <input type="number" required class="form-control" id="price" name="price">
+                    <div class="input-group-append">
+                        <span class="input-group-text">лей</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="productBrand">Бренд товара</label>
+                <input type="text" required class="form-control"
+                       id="productBrand" name="brand">
+            </div>
+            <div class="form-group">
+                <label for="productModel">Модель товара</label>
+                <input type="text" required class="form-control"
+                       id="productModel" name="model">
+            </div>
+            <div class="form-group">
+                <label for="searchCity">Город</label>
+                <select id="searchCity" required name="city" class="form-control">
+                    <option value="">Город не выбран</option>
+
+                    <option value="Кишинев">Кишинев</option>
+                    <option value="Бельцы">Бельцы</option>
+                    <option value="Калараш">Калараш</option>
+                    <option value="Орхей">Орхей</option>
+                    <option value="Резина">Резина</option>
+                    <option value="Тирасполь">Тирасполь</option>
+                    <option value="Рыбница">Рыбница</option>
+
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="description">Описание товара</label>
+                <textarea required class="form-control" id="description" name="description"></textarea>
+            </div>
+            <div class="form-group">
+                <div class="custom-file">
+                    <input type="file" name="file1" id="file1">
+                    <label class="custom-file-label" for="file1">Первая фотография к товару</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-file">
+                    <input type="file" name="file2" id="file2">
+                    <label class="custom-file-label" for="file2">Вторая фотография к товару</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-file">
+                    <input type="file" name="file3" id="file3">
+                    <label class="custom-file-label" for="file3">Третья фотография к товару</label>
+                </div>
+            </div>
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+
+            <button type="submit" style="width: 100%" class="btn btn-dark">Добавить</button>
+        </form>
+    </div>
+    <div class="row">
+    <div class="col-md-4" th:if="${!#lists.isEmpty(myProducts)}" th:each="product : ${myProducts}">
+        <a th:href="@{/product/{id}(id=${product.id})}" class="product-link" style="text-decoration: none;">
+            <div class="card text-white bg-dark my-3 product myCard">
+                <div class="card-top">
+                    <form th:action="@{/product/delete/{id}(id=${product.id})}" method="post">
+                        <input type="hidden" name="_method" value="delete"/>
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                        <button type="submit" class="btn btn-danger m-3">
+                            Удалить
+                        </button>
+                    </form>
+                </div>
+                <img th:src="@{/images/{id}(id=${product.previewImageId})}"
+                     class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${product.title}"></h5>
+                    <p class="card-text" th:text="${product.price} + ' лей'"></p>
+                </div>
+                <div class="card-footer" th:text="${product.city}">
+
+                </div>
+            </div>
+        </a>
+    </div>
+    </div>
+    <div th:if="${#lists.isEmpty(myProducts)}">
+        <h1 style="margin-left: 10%">Не найдено</h1>
+    </div>
+</div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+            integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+            crossorigin="anonymous"></script>
+</body>
+</html>

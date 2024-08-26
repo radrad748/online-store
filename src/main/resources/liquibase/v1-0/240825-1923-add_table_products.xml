@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+        http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+    
+    
+    <changeSet id="240825-1923" author="rad">
+        <createTable tableName="products">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="brand" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="city" type="varchar(20)"/>
+            <column name="date_created" type="datetime(6)"/>
+            <column name="description" type="text"/>
+            <column name="model" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="preview_image_id" type="bigint"/>
+            <column name="price" type="decimal(10,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="products"
+                                 baseColumnNames="user_id"
+                                 constraintName="FKdb050tk37qryv15hd932626th"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+        
+        <createIndex tableName="products" indexName="IDX_user_id_products">
+            <column name="user_id"/>
+        </createIndex>
+        
+    </changeSet>
+    
+</databaseChangeLog>

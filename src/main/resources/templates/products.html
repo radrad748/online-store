@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:replace="blocks/general :: title"></title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/for-card.css">
+</head>
+<body>
+<header th:replace="blocks/general :: header"></header>
+<div class="container mt-4">
+<h1 style="text-align: center">Поиск товаров</h1>
+<!--<form action="/logout" method="post" th:if="${#authorization.expression('isAuthenticated()')}">
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+    <input type="submit" value="Выйти">
+</form> -->
+    <form method="get" action="/">
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                <label for="searchCity">Город</label>
+                <select id="searchCity" class="form-control" name="searchCity">
+                    <option value="" th:selected="${searchCity == ''}">Город не выбран</option>
+                    <option value="Кишинев" th:selected="${searchCity == 'Кишинев'}">Кишинев</option>
+                    <option value="Бельцы" th:selected="${searchCity == 'Бельцы'}">Бельцы</option>
+                    <option value="Калараш" th:selected="${searchCity == 'Калараш'}">Калараш</option>
+                    <option value="Орхей" th:selected="${searchCity == 'Орхей'}">Орхей</option>
+                    <option value="Резина" th:selected="${searchCity == 'Резина'}">Резина</option>
+                    <option value="Тирасполь" th:selected="${searchCity == 'Тирасполь'}">Тирасполь</option>
+                    <option value="Рыбница" th:selected="${searchCity == 'Рыбница'}">Рыбница</option>
+                </select>
+            </div>
+            <div class="form-group col-md-10">
+                <label for="searchWord">Поиск по объявлениям</label>
+                <input type="text" name="searchWord" class="form-control" id="searchWord" th:value="${searchWord}">
+            </div>
+        </div>
+        <button style="width: 100%" type="submit" class="btn btn-dark mt-2">Поиск</button>
+    </form>
+<hr>
+<!--<a href="/admin" sec:authorize="hasAuthority('ROLE_ADMIN')">Панель администратора</a> -->
+    <div class="row">
+    <div class="col-md-4" th:if="${!#lists.isEmpty(products)}" th:each="product : ${products}">
+        <a th:href="@{/product/{id}(id=${product.id})}" class="product-link" style="text-decoration: none;">
+            <div class="card text-white bg-dark my-3 product myCard">
+                <img th:src="@{/images/{id}(id=${product.previewImageId})}"
+                     class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${product.title}"></h5>
+                    <p class="card-text" th:text="${product.price} + ' лей'"></p>
+                </div>
+                <div class="card-footer" th:text="${product.city}">
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+<br>
+    <nav aria-label="Page navigation example" th:if="${!#lists.isEmpty(products)}">
+        <ul class="pagination">
+            <li class="page-item" th:if="${!#lists.isEmpty(pageNumbers) and pageNumbers.get(0) != 1}">
+                <a class="page-link" th:href="@{/(searchWord=${searchWord}, searchCity=${searchCity}, page=${currentPage}, move=2, anchor=${pageNumbers.get(0)})}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <div th:each="page : ${pageNumbers}">
+                <li class="page-item"><a class="page-link"
+                                         th:href="@{/(searchWord=${searchWord}, searchCity=${searchCity}, page=${currentPage}, move=0, anchor=${pageNumbers.get(0)})}" th:text="${page}"></a></li>
+            </div>
+            <!--<li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+            <li class="page-item">
+                <a class="page-link" th:href="@{/(searchWord=${searchWord}, searchCity=${searchCity}, page=${currentPage}, move=1, anchor=${pageNumbers.get(0)})}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+                <!-- th:href="@{/?searchWord=${searchWord}&searchCity=${searchCity}&page=${currentPage}&move=1&anchor=${pageNumbers.get(0)}}" -->
+            </li>
+        </ul>
+    </nav>
+
+<h1 th:if="${#lists.isEmpty(products)}" style="margin-left: 5%;">Не найдено</h1>
+
+<!--<h3>Создать новый товар</h3>
+<form action="/product/create" method="post" enctype="multipart/form-data" th:if="${#authorization.expression('isAuthenticated()')}">
+    Название объявление: <input type="text" name="title"/><br>
+    Бренд: <input type="text" name="brand"/><br>
+    Модель: <input type="text" name="model"/><br>
+    Описание: <input type="text" name="description"/><br>
+    Цена: <input type="number" name="price"/><br>
+    Город: <input type="text" name="city"/><br>
+    Первая фото: <input type="file" name="file1"/><br>
+    Вторая фото: <input type="file" name="file2"/><br>
+    Третья фото: <input type="file" name="file3"/><br>
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+    <input type="submit" value="Добавить"/>
+</form> -->
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

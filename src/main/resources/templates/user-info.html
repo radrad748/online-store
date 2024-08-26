@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:replace="blocks/general :: title"></title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/for-card.css">
+</head>
+<body>
+<header th:replace="blocks/general :: header"></header>
+<div class="container mt-4">
+    <h1 style="text-align: center">Информация о пользователе</h1>
+    <hr>
+    <div style="text-align: center">
+        <img src="/static/img/proff.jpg"
+             style="border:2px solid black; border-radius: 20px" height="120">
+        <br>
+        <br>
+        <h2 th:text="${user.name}"></h2>
+        <br>
+        Номер телефона: <b th:text="${user.phoneNumber}"></b>
+    </div>
+    <br>
+    <hr>
+    <h1 style="text-align: center" th:text="'Товары пользователя ' + ${user.name}"></h1>
+    <br>
+    <div class="row">
+    <div class="col-md-4" th:each="product : ${userProducts}">
+        <a th:href="@{/product/{id}(id=${product.id})}" class="product-link" style="text-decoration: none;">
+            <div class="card text-white bg-dark my-3 product myCard">
+
+                <img th:src="@{/images/{id}(id=${product.previewImageId})}"
+                     class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${product.title}"></h5>
+                    <p class="card-text" th:text="${product.price} + ' лей'"></p>
+                </div>
+                <div class="card-footer" th:text="${product.user.name}">
+                </div>
+            </div>
+        </a>
+        <h1 style="text-align: center" th:if="${#lists.isEmpty(userProducts)}">Не найдено</h1>
+</div>
+    </div>
+</div>
+
+</body>
+</html>

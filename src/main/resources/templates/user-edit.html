@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:replace="blocks/general :: title"></title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<header th:replace="blocks/general :: header"></header>
+<div class="container mt-4">
+    <h1 style="text-align: center">Редактирование</h1>
+    <hr>
+    <div style="text-align: center">
+        <img src="/static/img/proff.jpg"
+             style="border:2px solid black; border-radius: 20px" height="120">
+        <br>
+        <br>
+        <h2 th:text="'Редактирование пользователя ' + ${user.name}"></h2>
+        <br>
+        <form action="/admin/user/edit" method="post">
+            <div th:each="role : ${roles}">
+                <label th:for="${role}">
+                    <input type="checkbox" th:name="${role}" th:value="${role}" th:checked="${user.roles.contains(role)}">
+                    <span th:text="${role}"></span>
+                </label>
+            </div>
+            <input type="hidden" th:value="${user.id}" name="userId">
+            <input type="hidden" th:value="${_csrf.token}" name="_csrf">
+            <button type="submit" style="width: 100%" class="btn btn-dark mt-2">Сохранить</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

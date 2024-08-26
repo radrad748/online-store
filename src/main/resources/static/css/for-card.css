@@ -1,0 +1,7 @@
+.myCard {
+    transition: transform 0.3s ease; /* Плавное увеличение */
+}
+
+.myCard:hover {
+    transform: scale(1.05); /* Увеличение на 5% при наведении */
+}
